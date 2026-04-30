@@ -73,7 +73,7 @@
     ============================================ */
     body {
       background: #0d0d0d; 
-      /* 
+      /*  
         Color de fondo. #0d0d0d es un negro casi puro.
         Los colores en CSS se escriben en hexadecimal (#RRGGBB).
         CÓMO MODIFICAR: Usa una herramienta como colorpicker.me para elegir colores.
