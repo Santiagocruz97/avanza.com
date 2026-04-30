@@ -1,164 +1,495 @@
 <!DOCTYPE html>
+<!-- 
+  DOCTYPE: Le dice al navegador que este es un documento HTML5 (la versión moderna de HTML).
+  Siempre debe ir en la primera línea.
+-->
+
 <html lang="es">
+<!-- 
+  <html>: Es la etiqueta raíz. Todo el contenido de la página va dentro de ella.
+  lang="es": Le dice al navegador (y a los buscadores) que el idioma es español.
+  Toda etiqueta que "abre" (<html>) debe cerrarse al final (</html>).
+-->
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AVANZA</title>
+<!-- 
+  <head>: Sección "invisible" de la página. El usuario no ve esto directamente,
+  pero contiene información importante: título de la pestaña, fuentes, estilos, etc.
+-->
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
-}
+  <meta charset="UTF-8">
+  <!-- 
+    <meta>: Etiquetas de metadatos (información sobre la página).
+    charset="UTF-8": Define el tipo de caracteres. UTF-8 permite tildes, ñ, emojis, etc.
+    Sin esto, los caracteres especiales pueden verse mal (ej: "Ã©" en vez de "é").
+  -->
 
-body{
-background:#0d0d0d;
-color:white;
-overflow-x:hidden;
-}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 
+    viewport: Hace que la página se vea bien en celulares.
+    width=device-width: El ancho se adapta al ancho del dispositivo.
+    initial-scale=1.0: Zoom inicial = 100% (sin zoom).
+    SIN esto, la página se vería muy pequeña en móviles.
+  -->
 
-header{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
-background:linear-gradient(135deg,#000000,#111111,#1a1a1a);
-}
+  <title>AVANZA</title>
+  <!-- 
+    <title>: El texto que aparece en la pestaña del navegador.
+    También es lo que Google muestra en los resultados de búsqueda.
+    CÓMO MODIFICAR: Cambia "AVANZA" por el nombre que quieras.
+  -->
 
-h1{
-font-size:80px;
-letter-spacing:4px;
-margin-bottom:20px;
-animation:fadeDown 1.2s ease;
-}
+  <style>
+  <!-- 
+    <style>: Todo lo que está aquí dentro es CSS (hojas de estilo).
+    CSS controla el ASPECTO visual: colores, tamaños, fuentes, espacios, animaciones.
+    La estructura básica de CSS es: selector { propiedad: valor; }
+    El "selector" dice A QUÉ elemento afecta, y las propiedades dicen CÓMO se ve.
+  -->
 
-header p{
-font-size:24px;
-max-width:700px;
-opacity:.85;
-margin-bottom:40px;
-animation:fadeUp 1.5s ease;
-}
+    /* ============================================
+       RESET GLOBAL
+       El símbolo * significa "aplica esto a TODOS los elementos de la página".
+       Es un "reset" que elimina estilos predeterminados del navegador
+       para que todos los navegadores muestren lo mismo.
+    ============================================ */
+    * {
+      margin: 0;          /* Elimina márgenes externos predeterminados */
+      padding: 0;         /* Elimina relleno interno predeterminado */
+      box-sizing: border-box; /* El padding NO aumenta el tamaño del elemento (más predecible) */
+      font-family: Arial, Helvetica, sans-serif; 
+      /* 
+        Fuente por defecto para toda la página.
+        CÓMO MODIFICAR: Cambia "Arial" por otra fuente.
+        Para usar fuentes de Google Fonts, busca en fonts.google.com,
+        copia el <link> que te dan y ponlo en el <head>, luego usa el nombre aquí.
+        Ejemplo con otra fuente: font-family: 'Poppins', sans-serif;
+      */
+    }
 
-.btn{
-padding:18px 38px;
-background:#ffffff;
-color:#000;
-text-decoration:none;
-font-weight:bold;
-border-radius:50px;
-transition:.3s;
-font-size:18px;
-}
+    /* ============================================
+       BODY - El cuerpo de la página
+       body es el contenedor principal de todo el contenido visible.
+    ============================================ */
+    body {
+      background: #0d0d0d; 
+      /* 
+        Color de fondo. #0d0d0d es un negro casi puro.
+        Los colores en CSS se escriben en hexadecimal (#RRGGBB).
+        CÓMO MODIFICAR: Usa una herramienta como colorpicker.me para elegir colores.
+        Ejemplos: #ffffff = blanco, #ff0000 = rojo, #1a73e8 = azul Google.
+      */
+      color: white;        /* Color del texto para toda la página */
+      overflow-x: hidden;  /* Oculta el scroll horizontal (evita que aparezca barra abajo) */
+    }
 
-.btn:hover{
-transform:scale(1.08);
-background:#00ff99;
-}
+    /* ============================================
+       HEADER - La sección principal / portada
+       Es la primera pantalla que ve el usuario al entrar.
+    ============================================ */
+    header {
+      height: 100vh; 
+      /* 
+        100vh = 100% del alto de la pantalla (viewport height).
+        Hace que el header ocupe exactamente una pantalla completa.
+        VARIANTES: 50vh = mitad de pantalla, 80vh = 80% de la pantalla.
+      */
 
-section{
-padding:100px 10%;
-}
+      display: flex;            /* Activa Flexbox: sistema moderno para organizar elementos */
+      flex-direction: column;   /* Los hijos se apilan en columna (uno abajo del otro) */
+      justify-content: center;  /* Centra los hijos verticalmente */
+      align-items: center;      /* Centra los hijos horizontalmente */
+      text-align: center;       /* Centra el texto dentro de cada elemento */
+      padding: 20px;            /* Relleno interno de 20px en todos los lados */
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:30px;
-margin-top:50px;
-}
+      background: linear-gradient(135deg, #000000, #111111, #1a1a1a);
+      /* 
+        Fondo degradado (gradiente).
+        linear-gradient(ángulo, color1, color2, color3...)
+        135deg = diagonal de arriba-izquierda a abajo-derecha.
+        CÓMO MODIFICAR: Cambia los colores hexadecimales.
+        Ejemplo con color: linear-gradient(135deg, #1a0533, #0d0d0d, #001233)
+        Herramienta útil: cssgradient.io
+      */
+    }
 
-.card{
-background:#161616;
-padding:35px;
-border-radius:20px;
-transition:.3s;
-border:1px solid #222;
-}
+    /* ============================================
+       H1 - Título principal "AVANZA"
+       h1 es el encabezado más importante de la página.
+       Jerarquía: h1 > h2 > h3 > h4 > h5 > h6
+    ============================================ */
+    h1 {
+      font-size: 80px;     /* Tamaño de fuente enorme. Unidades: px, em, rem, vw */
+      letter-spacing: 4px; /* Espacio entre letras (kerning). Útil para títulos impactantes */
+      margin-bottom: 20px; /* Espacio debajo del h1 (separa del párrafo) */
+      animation: fadeDown 1.2s ease;
+      /* 
+        Aplica la animación "fadeDown" (definida abajo con @keyframes).
+        1.2s = dura 1.2 segundos.
+        ease = velocidad suave (empieza rápido, termina lento).
+      */
+    }
 
-.card:hover{
-transform:translateY(-10px);
-border-color:#00ff99;
-}
+    /* 
+      Selector con espacio: "header p" significa "los <p> que están DENTRO del <header>".
+      Así puedes dar estilos específicos sin afectar todos los párrafos de la página.
+    */
+    header p {
+      font-size: 24px;
+      max-width: 700px;   /* Ancho máximo del texto. Evita que las líneas sean demasiado largas */
+      opacity: .85;       /* Transparencia: 0 = invisible, 1 = opaco. .85 = 85% visible */
+      margin-bottom: 40px;
+      animation: fadeUp 1.5s ease;
+    }
 
-.card h3{
-margin-bottom:15px;
-font-size:24px;
-}
+    /* ============================================
+       BTN - Botón / Enlace con estilo de botón
+       No es un <button> real, es un <a> (enlace) estilizado como botón.
+    ============================================ */
+    .btn {
+      /* 
+        El punto antes del nombre (.btn) significa que es una CLASE.
+        Las clases se aplican a elementos con class="btn".
+        Puedes aplicar la misma clase a múltiples elementos.
+      */
+      padding: 18px 38px;      /* Relleno: 18px arriba/abajo, 38px izquierda/derecha */
+      background: #ffffff;     /* Fondo blanco */
+      color: #000;             /* Texto negro */
+      text-decoration: none;   /* Elimina el subrayado de los enlaces */
+      font-weight: bold;       /* Texto en negrita */
+      border-radius: 50px;     /* Bordes redondeados. 50px+ crea forma de "píldora" */
+      transition: .3s;         /* Las animaciones de hover duran 0.3 segundos (suavidad) */
+      font-size: 18px;
+    }
 
-.card p{
-opacity:.8;
-line-height:1.6;
-}
+    /* 
+      :hover es una "pseudo-clase": se activa cuando el mouse está ENCIMA del elemento.
+      Aquí defines cómo se ve el botón al pasar el mouse.
+    */
+    .btn:hover {
+      transform: scale(1.08);  /* Agranda el elemento al 108% de su tamaño */
+      background: #00ff99;     /* Cambia el fondo a verde neón al hacer hover */
+    }
 
-footer{
-padding:40px;
-text-align:center;
-opacity:.6;
-font-size:14px;
-}
+    /* ============================================
+       SECTION - Secciones de contenido
+       <section> es un bloque semántico de contenido relacionado.
+    ============================================ */
+    section {
+      padding: 100px 10%; 
+      /* 
+        100px arriba/abajo, 10% izquierda/derecha.
+        El 10% es relativo al ancho de la página (márgenes laterales).
+        CÓMO MODIFICAR: Más padding = más espacio en blanco (diseño "respirado").
+      */
+    }
 
-@keyframes fadeDown{
-from{opacity:0;transform:translateY(-40px);}
-to{opacity:1;transform:translateY(0);}
-}
+    /* ============================================
+       GRID - Sistema de cuadrícula para las tarjetas
+       CSS Grid es el sistema más potente para layouts en 2 dimensiones.
+    ============================================ */
+    .grid {
+      display: grid; /* Activa el sistema de Grid */
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      /* 
+        Esta es la línea mágica del responsive design:
+        - repeat(auto-fit, ...): Crea tantas columnas como quepan automáticamente
+        - minmax(250px, 1fr): Cada columna tiene mínimo 250px y máximo 1 fracción del espacio
+        RESULTADO: En pantallas grandes = 4 columnas, en móvil = 1 columna. Automático.
+        CÓMO MODIFICAR: Cambia 250px para hacer las tarjetas más angostas o anchas.
+      */
+      gap: 30px;          /* Espacio entre las tarjetas (filas y columnas) */
+      margin-top: 50px;   /* Espacio encima del grid */
+    }
 
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(40px);}
-to{opacity:1;transform:translateY(0);}
-}
-</style>
+    /* ============================================
+       CARD - Tarjetas de servicios
+    ============================================ */
+    .card {
+      background: #161616;    /* Fondo gris muy oscuro */
+      padding: 35px;          /* Relleno interno generoso */
+      border-radius: 20px;    /* Esquinas redondeadas */
+      transition: .3s;        /* Suaviza las animaciones de hover */
+      border: 1px solid #222; /* Borde delgado gris oscuro */
+    }
+
+    .card:hover {
+      transform: translateY(-10px); /* Mueve la tarjeta 10px hacia ARRIBA al hacer hover */
+      border-color: #00ff99;        /* Cambia el borde a verde neón */
+    }
+
+    .card h3 {
+      margin-bottom: 15px;  /* Espacio entre el título y el párrafo */
+      font-size: 24px;
+    }
+
+    .card p {
+      opacity: .8;        /* Un poco transparente para jerarquía visual */
+      line-height: 1.6;   /* Espaciado entre líneas (1.6 = 160% del tamaño de fuente) */
+    }
+
+    /* ============================================
+       FOOTER - Pie de página
+    ============================================ */
+    footer {
+      padding: 40px;
+      text-align: center;
+      opacity: .6;      /* Más transparente = menos prominente (es información secundaria) */
+      font-size: 14px;
+    }
+
+    /* ============================================
+       ANIMACIONES con @keyframes
+       Define el comportamiento de las animaciones paso a paso.
+       "from" = estado inicial, "to" = estado final.
+       También puedes usar porcentajes: 0% { } 50% { } 100% { }
+    ============================================ */
+
+    @keyframes fadeDown {
+      /* El elemento aparece desde arriba, como si cayera hacia su posición */
+      from {
+        opacity: 0;                  /* Empieza invisible */
+        transform: translateY(-40px); /* Empieza 40px arriba de su posición */
+      }
+      to {
+        opacity: 1;                  /* Termina visible */
+        transform: translateY(0);    /* Termina en su posición normal */
+      }
+    }
+
+    @keyframes fadeUp {
+      /* El elemento aparece desde abajo, como si subiera hacia su posición */
+      from {
+        opacity: 0;
+        transform: translateY(40px); /* Empieza 40px ABAJO */
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+  </style>
 </head>
+<!-- Fin del <head>. Todo lo de arriba era configuración. Ahora empieza el contenido visible. -->
 
 <body>
+<!-- 
+  <body>: Todo lo que está aquí es lo que el usuario VE en el navegador.
+  Los elementos HTML se organizan de manera jerárquica (anidados).
+-->
 
-<header>
-<h1>AVANZA</h1>
-<p>Psicología integral-adicciones, una mejor forma de vivir.</p>
-<a href="#servicios" class="btn">Comienza con el cambio</a>
-</header>
+  <!-- ==========================================
+    HEADER - Sección portada / hero
+    <header> es una etiqueta semántica que le indica a Google y lectores de pantalla
+    que este es el encabezado principal del sitio.
+  ========================================== -->
+  <header>
 
-<section id="servicios">
-<h2 style="text-align:center;font-size:45px;">Nuestros Servicios</h2>
+    <h1>AVANZA</h1>
+    <!-- 
+      <h1>: El título más importante. Solo debe haber UN h1 por página.
+      CÓMO MODIFICAR: Cambia "AVANZA" por el nombre de tu empresa o sitio.
+    -->
 
-<div class="grid">
+    <p>Psicología integral-adicciones, una mejor forma de vivir.</p>
+    <!-- 
+      <p>: Párrafo de texto. Es el elemento más común para texto.
+      CÓMO MODIFICAR: Cambia el texto entre <p> y </p>.
+    -->
 
-<div class="card">
-<h3>🚀 Crecimiento</h3>
-<p>Estrategias para acelerar resultados y escalar proyectos.</p>
-</div>
+    <a href="#servicios" class="btn">Comienza con el cambio</a>
+    <!-- 
+      <a>: Enlace (anchor). 
+      href="#servicios": El # significa que va a un elemento de la MISMA PÁGINA
+                         con id="servicios" (no a otra página). Es un ancla interna.
+      class="btn": Aplica los estilos de .btn definidos en el CSS.
+      CÓMO MODIFICAR:
+        - Para ir a otra página: href="contacto.html"
+        - Para ir a un sitio externo: href="https://www.google.com"
+        - Para email: href="mailto:tucorreo@gmail.com"
+        - Para WhatsApp: href="https://wa.me/573001234567" (con código de país)
+    -->
 
-<div class="card">
-<h3>💼 Negocios</h3>
-<p>Soluciones modernas para empresas y emprendedores.</p>
-</div>
+  </header>
 
-<div class="card">
-<h3>🤖 Tecnología</h3>
-<p>Automatización, IA y herramientas digitales.</p>
-</div>
 
-<div class="card">
-<h3>📈 Marketing</h3>
-<p>Campañas enfocadas en ventas y posicionamiento.</p>
-</div>
+  <!-- ==========================================
+    SECTION SERVICIOS
+    id="servicios": El identificador único de esta sección.
+    El botón de arriba (href="#servicios") hace scroll hasta acá.
+    REGLA: Solo puede haber UN elemento con el mismo id en toda la página.
+  ========================================== -->
+  <section id="servicios">
 
-</div>
-</section>
+    <h2 style="text-align:center; font-size:45px;">Nuestros Servicios</h2>
+    <!-- 
+      <h2>: Encabezado secundario. Úsalo para títulos de secciones.
+      style="...": CSS en línea, directamente en el elemento.
+                   Útil para ajustes rápidos, pero para cosas complejas mejor usar <style>.
+      JERARQUÍA DE ENCABEZADOS: h1 (título página) > h2 (secciones) > h3 (subsecciones)
+    -->
 
-<section style="text-align:center;">
-<h2 style="font-size:50px;">¿Listo para avanzar?</h2>
-<p style="margin:20px 0 40px;opacity:.8;font-size:22px;">Conecta con nosotros y transforma tu futuro.</p>
-<a href="#" class="btn">Contáctanos</a>
-</section>
+    <div class="grid">
+    <!-- 
+      <div>: Contenedor genérico sin significado semántico propio.
+      Es como una "caja" que sirve para agrupar elementos y aplicarles estilos.
+      class="grid": Aplica el layout de cuadrícula definido en CSS.
+    -->
 
-<footer>
-© 2026 AVANZA.COM - Todos los derechos reservados
-</footer>
+      <!-- TARJETA 1 -->
+      <div class="card">
+        <!-- 
+          CÓMO AGREGAR MÁS TARJETAS: Copia todo este bloque <div class="card">...</div>
+          y pégalo justo después del último </div> de tarjeta, antes del </div> del grid.
+        -->
+        <h3>🚀 Crecimiento</h3>
+        <!-- 
+          <h3>: Encabezado de tercer nivel. Perfecto para títulos de tarjetas.
+          Los emojis se escriben directamente en HTML sin código especial.
+          CÓMO MODIFICAR: Cambia el emoji y el texto.
+        -->
+        <p>Estrategias para acelerar resultados y escalar proyectos.</p>
+      </div>
+
+      <!-- TARJETA 2 -->
+      <div class="card">
+        <h3>💼 Negocios</h3>
+        <p>Soluciones modernas para empresas y emprendedores.</p>
+      </div>
+
+      <!-- TARJETA 3 -->
+      <div class="card">
+        <h3>🤖 Tecnología</h3>
+        <p>Automatización, IA y herramientas digitales.</p>
+      </div>
+
+      <!-- TARJETA 4 -->
+      <div class="card">
+        <h3>📈 Marketing</h3>
+        <p>Campañas enfocadas en ventas y posicionamiento.</p>
+      </div>
+
+      <!-- 
+        ➕ PARA AGREGAR UNA TARJETA NUEVA, copia esto y pégalo aquí:
+        <div class="card">
+          <h3>🧠 Tu servicio</h3>
+          <p>Descripción de tu nuevo servicio aquí.</p>
+        </div>
+      -->
+
+    </div>
+    <!-- Fin del div.grid -->
+
+  </section>
+  <!-- Fin de la sección de servicios -->
+
+
+  <!-- ==========================================
+    SECTION LLAMADO A LA ACCIÓN (CTA - Call To Action)
+    Esta sección anima al usuario a contactarse.
+    style="" directamente en la etiqueta: CSS en línea.
+  ========================================== -->
+  <section style="text-align:center;">
+
+    <h2 style="font-size:50px;">¿Listo para avanzar?</h2>
+
+    <p style="margin:20px 0 40px; opacity:.8; font-size:22px;">
+      <!-- 
+        margin:20px 0 40px: Shorthand de margin con 3 valores:
+        20px arriba, 0 izquierda/derecha, 40px abajo.
+      -->
+      Conecta con nosotros y transforma tu futuro.
+    </p>
+
+    <a href="#" class="btn">Contáctanos</a>
+    <!-- 
+      href="#": El # solo va al inicio de la página. 
+      CÓMO MODIFICAR para que lleve a WhatsApp:
+      href="https://wa.me/573001234567" (reemplaza con tu número)
+      
+      CÓMO MODIFICAR para que lleve a otra página:
+      href="contacto.html"
+    -->
+
+  </section>
+
+
+  <!-- ==========================================
+    FOOTER - Pie de página
+    <footer> es semántico: le dice a Google que es el pie de página.
+  ========================================== -->
+  <footer>
+    © 2026 AVANZA.COM - Todos los derechos reservados
+    <!-- 
+      CÓMO MODIFICAR: Cambia el año y el nombre.
+      Puedes agregar enlaces aquí: 
+      <a href="politica-privacidad.html" style="color:white;">Política de privacidad</a>
+    -->
+  </footer>
 
 </body>
 </html>
+
+<!--
+  ================================================================
+  GUÍA RÁPIDA PARA AGREGAR PÁGINAS NUEVAS
+  ================================================================
+
+  PASO 1: Crea un nuevo archivo HTML en la misma carpeta.
+  Ejemplo: crea "contacto.html" con esta estructura básica:
+
+  <!DOCTYPE html>
+  <html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - AVANZA</title>
+    <style>
+      /* Copia aquí los mismos estilos del archivo principal */
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Contáctanos</h1>
+    </header>
+    <section>
+      <p>Aquí va el contenido de tu nueva página.</p>
+    </section>
+    <footer>© 2026 AVANZA.COM</footer>
+  </body>
+  </html>
+
+  PASO 2: En el archivo principal, enlaza a la nueva página:
+  <a href="contacto.html" class="btn">Contáctanos</a>
+
+  NOTA IMPORTANTE: Los archivos deben estar en la misma carpeta para que
+  href="contacto.html" funcione. Si la nueva página está en una subcarpeta:
+  href="pages/contacto.html"
+
+  ================================================================
+  RESUMEN DE ETIQUETAS MÁS USADAS
+  ================================================================
+  <h1> a <h6>  → Títulos (h1=más importante, h6=menos)
+  <p>          → Párrafo de texto
+  <a>          → Enlace
+  <div>        → Contenedor genérico (caja)
+  <section>    → Sección de contenido
+  <header>     → Encabezado de la página
+  <footer>     → Pie de página
+  <img>        → Imagen: <img src="foto.jpg" alt="Descripción">
+  <ul><li>     → Lista con viñetas
+  <ol><li>     → Lista numerada
+  <strong>     → Texto en negrita (con significado semántico)
+  <br>         → Salto de línea
+  <hr>         → Línea horizontal separadora
+
+  ================================================================
+  CÓMO AGREGAR UNA IMAGEN
+  ================================================================
+  <img src="mi-imagen.jpg" alt="Descripción de la imagen" style="width:100%; border-radius:10px;">
+  
+  - src: ruta de la imagen (puede ser local o una URL de internet)
+  - alt: texto alternativo (importante para accesibilidad y SEO)
+  - Ejemplo con imagen de internet: src="https://images.unsplash.com/..."
+-->
