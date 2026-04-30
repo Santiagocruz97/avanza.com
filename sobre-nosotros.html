@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre Nosotros - AVANZA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --verde: #00c875;
+  --negro: #080808;
+  --gris-oscuro: #111111;
+  --gris-borde: #1e1e1e;
+  --blanco: #f5f5f0;
+  --blanco-suave: rgba(245,245,240,0.6);
+}
+body { background: var(--negro); color: var(--blanco); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+/* NAV - igual en todas las páginas */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 8%;
+  background: rgba(8,8,8,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gris-borde);
+}
+.nav-logo { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; color:var(--blanco); text-decoration:none; letter-spacing:3px; }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-link { color:var(--blanco-suave); text-decoration:none; font-size:14px; letter-spacing:1px; text-transform:uppercase; transition:color 0.3s; }
+.nav-link:hover, .nav-link.activo { color:var(--verde); }
+
+/* HERO DE PÁGINA INTERIOR */
+.page-hero {
+  padding: 160px 8% 80px;
+  /* 
+    =====================================================
+    CÓMO AGREGAR IMAGEN DE FONDO A ESTA SECCIÓN:
+    Reemplaza el background con:
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
+                url('tu-imagen.jpg') center/cover no-repeat fixed;
+    
+    El "fixed" crea un efecto parallax (la imagen no se mueve al hacer scroll).
+    Quita "fixed" si no quieres ese efecto.
+    =====================================================
+  */
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,200,117,0.07) 0%, transparent 60%), var(--negro);
+  border-bottom: 1px solid var(--gris-borde);
+}
+
+.breadcrumb { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--verde); margin-bottom:24px; }
+.breadcrumb a { color:var(--blanco-suave); text-decoration:none; }
+.breadcrumb a:hover { color:var(--verde); }
+
+.page-hero h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-size: clamp(48px, 7vw, 90px);
+  font-weight:300; letter-spacing:4px; line-height:1.05;
+  margin-bottom:24px;
+  animation: fadeUp 1s ease forwards;
+}
+
+.page-hero .subtitulo {
+  font-size:18px; color:var(--blanco-suave); max-width:600px; line-height:1.7;
+  animation: fadeUp 1s ease 0.2s both;
+}
+
+/* SECCIONES DE CONTENIDO */
+.contenido { padding: 80px 8%; }
+
+.bloque {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  margin-bottom: 100px;
+}
+
+/* En móvil, el grid pasa a 1 columna */
+@media(max-width: 768px) {
+  .bloque { grid-template-columns: 1fr; gap: 40px; }
+  .nav-links { display:none; } /* En móvil oculta el menú (puedes agregar un menú hamburguesa) */
+}
+
+.bloque-invertido { direction: rtl; } /* Invierte el orden visual de las columnas */
+.bloque-invertido > * { direction: ltr; }
+
+.bloque-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--verde); margin-bottom:16px; }
+
+.bloque h2 {
+  font-family:'Cormorant Garamond',serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight:400; line-height:1.2; margin-bottom:24px;
+}
+
+.bloque p { color:var(--blanco-suave); line-height:1.8; font-size:16px; margin-bottom:16px; }
+
+/* =====================================================
+   CONTENEDOR DE IMAGEN
+   Así se ve el espacio donde irá tu foto/imagen.
+   
+   CÓMO AGREGAR UNA IMAGEN REAL:
+   Reemplaza el <div class="img-placeholder"> con:
+   <img src="tu-foto.jpg" alt="Descripción" class="img-real">
+   
+   Y añade este CSS:
+   .img-real { width:100%; border-radius:16px; object-fit:cover; height:400px; }
+   ===================================================== */
+.img-placeholder {
+  width: 100%;
+  aspect-ratio: 4/3;         /* Relación ancho:alto automática */
+  background: var(--gris-oscuro);
+  border: 1px dashed var(--gris-borde);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--blanco-suave);
+}
+
+.img-placeholder span { font-size: 40px; }
+.img-placeholder p { font-size: 13px; text-align: center; line-height: 1.6; max-width: 200px; }
+
+/* Imagen real (úsala cuando tengas tus fotos) */
+.img-real { width:100%; border-radius:16px; object-fit:cover; height:420px; display:block; }
+
+/* =====================================================
+   CONTENEDOR DE VIDEO
+   CÓMO AGREGAR UN VIDEO DE YOUTUBE:
+   1. Ve al video en YouTube
+   2. Clic en "Compartir" → "Insertar"
+   3. Copia el código iframe que te dan
+   4. Pégalo dentro de .video-wrapper reemplazando el placeholder
+   ===================================================== */
+.video-wrapper {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--gris-borde);
+  background: var(--gris-oscuro);
+}
+
+/* Pega aquí un iframe de YouTube y el video se verá correctamente */
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Si no tienes video aún, este placeholder lo indica visualmente */
+.video-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction:column; align-items:center; justify-content:center;
+  gap: 12px; color: var(--blanco-suave);
+}
+.video-placeholder span { font-size: 48px; }
+.video-placeholder p { font-size: 13px; text-align:center; line-height:1.6; max-width: 220px; }
+
+/* TARJETAS DE LAS 5 VARIABLES */
+.variables-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 60px;
+}
+
+.variable-card {
+  background: var(--gris-oscuro);
+  border: 1px solid var(--gris-borde);
+  border-radius: 16px;
+  padding: 36px 28px;
+  position: relative;
+  transition: border-color 0.3s;
+}
+.variable-card:hover { border-color: rgba(0,200,117,0.4); }
+
+.variable-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size: 56px;
+  color: rgba(0,200,117,0.15);
+  font-weight:700;
+  line-height:1;
+  margin-bottom: 16px;
+}
+
+.variable-card h3 { font-size: 18px; margin-bottom: 12px; }
+.variable-card p { color:var(--blanco-suave); font-size:14px; line-height:1.7; }
+
+/* EQUIPO */
+.equipo-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.equipo-tag {
+  padding: 10px 20px;
+  background: var(--gris-oscuro);
+  border: 1px solid var(--gris-borde);
+  border-radius: 60px;
+  font-size: 14px;
+  color: var(--blanco-suave);
+}
+
+/* FOOTER */
+footer {
+  padding:40px 8%; border-top:1px solid var(--gris-borde);
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+}
+.footer-logo { font-family:'Cormorant Garamond',serif; font-size:22px; letter-spacing:3px; }
+.footer-texto { color:var(--blanco-suave); font-size:13px; }
+
+.btn-primary {
+  display: inline-block;
+  padding:14px 36px; background:var(--verde); color:#000;
+  text-decoration:none; font-weight:500; border-radius:60px; transition:all 0.3s; margin-top:24px;
+}
+.btn-primary:hover { transform:scale(1.04); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(30px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">AVANZA</a>
+  <ul class="nav-links">
+    <li><a href="sobre-nosotros.html" class="nav-link activo">Nosotros</a></li>
+    <li><a href="servicios.html" class="nav-link">Servicios</a></li>
+    <li><a href="testimonios.html" class="nav-link">Testimonios</a></li>
+    <li><a href="noticias.html" class="nav-link">Noticias</a></li>
+  </ul>
+</nav>
+
+
+<!-- ENCABEZADO DE LA PÁGINA -->
+<div class="page-hero">
+  <p class="breadcrumb"><a href="index.html">Inicio</a> / Sobre Nosotros</p>
+  <h1>Quiénes<br>somos</h1>
+  <p class="subtitulo">Una institución especializada con más de 25 años transformando vidas desde un enfoque holístico e integral.</p>
+</div>
+
+
+<div class="contenido">
+
+  <!-- BLOQUE 1: Texto + Imagen -->
+  <div class="bloque">
+
+    <div>
+      <p class="bloque-label">Nuestra misión</p>
+      <h2>Salud integral con enfoque humano</h2>
+      <p>Somos una institución especializada en abordar todos los procesos de salud desde un enfoque holístico e integral, priorizando el modelo cognitivo conductual con terapias de tercera generación contextuales.</p>
+      <p>Nuestros procedimientos son personalizados e individualizados, los cuales se desarrollan a domicilio — interno, semi interno, ambulatorio o por citas — a nivel nacional e internacional, o de forma virtual según el caso.</p>
+      <a href="servicios.html" class="btn-primary">Ver nuestros servicios</a>
+    </div>
+
+    <!-- 
+      =====================================================
+      AQUÍ VA TU PRIMERA IMAGEN (Foto del equipo, consultorio, etc.)
+      
+      OPCIÓN A - Si tienes la imagen guardada en tu carpeta:
+      Borra el div.img-placeholder y escribe:
+      <img src="equipo.jpg" alt="Equipo AVANZA" class="img-real">
+      
+      OPCIÓN B - Si usas una imagen de internet (no recomendado para producción):
+      <img src="https://url-de-la-imagen.com/foto.jpg" alt="Equipo AVANZA" class="img-real">
+      =====================================================
+    -->
+    <div class="img-placeholder">
+      <span>📸</span>
+      <p>Aquí va una foto de tu equipo o instalaciones<br><br>Reemplaza este bloque con:<br><code>&lt;img src="equipo.jpg" class="img-real"&gt;</code></p>
+    </div>
+
+  </div>
+
+
+  <!-- BLOQUE 2: Video + Texto (orden invertido) -->
+  <div class="bloque bloque-invertido">
+
+    <!-- 
+      =====================================================
+      AQUÍ VA TU VIDEO
+      
+      CÓMO INSERTAR UN VIDEO DE YOUTUBE:
+      1. Ve al video en YouTube que quieres mostrar
+      2. Clic en el botón "Compartir" debajo del video
+      3. Clic en "Insertar"
+      4. Copia el código <iframe ...> que aparece
+      5. Pégalo dentro del div.video-wrapper, reemplazando el div.video-placeholder
+      
+      Ejemplo de lo que quedaría:
+      <div class="video-wrapper">
+        <iframe width="560" height="315" 
+          src="https://www.youtube.com/embed/TU-ID-DE-VIDEO" 
+          title="Video AVANZA" frameborder="0" allowfullscreen>
+        </iframe>
+      </div>
+
+      CÓMO INSERTAR UN VIDEO PROPIO (archivo .mp4):
+      <div class="video-wrapper">
+        <video controls style="width:100%;height:100%;object-fit:cover;">
+          <source src="mi-video.mp4" type="video/mp4">
+        </video>
+      </div>
+      =====================================================
+    -->
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <span>▶️</span>
+        <p>Aquí va un video de YouTube o tu propio video<br><br>Lee los comentarios en el código para saber cómo insertarlo</p>
+      </div>
+    </div>
+
+    <div>
+      <p class="bloque-label">Nuestra historia</p>
+      <h2>25 años de tratamientos garantizados</h2>
+      <p>Durante más de 25 años de labores profesionales, nuestro modelo ha demostrado que nuestros pacientes y sus familias logran recuperarse y además mejoran su calidad de vida.</p>
+      <p>Trabajamos con el paciente y su familia con métodos innovadores y exclusivos en la recuperación de las adicciones y otras problemáticas de salud mental, emocional, física y comportamental.</p>
+    </div>
+
+  </div>
+
+
+  <!-- LAS 5 VARIABLES -->
+  <div style="margin-bottom: 100px;">
+    <p class="bloque-label">Nuestro modelo</p>
+    <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,52px); font-weight:400; margin-bottom:8px;">Las 5 variables que nos definen</h2>
+    <p style="color:var(--blanco-suave); max-width:560px;">Llevamos 25 años trabajando nuestros procesos de salud bajo estos 5 pilares fundamentales.</p>
+
+    <div class="variables-grid">
+      <div class="variable-card">
+        <div class="variable-num">01</div>
+        <h3>Tratamiento Personalizado</h3>
+        <p>Todos los tratamientos son diseñados específicamente para cada paciente y familia, con protocolos particulares que garantizan el éxito de la recuperación.</p>
+      </div>
+      <div class="variable-card">
+        <div class="variable-num">02</div>
+        <h3>Tratamientos Integrales</h3>
+        <p>Se trabaja conjuntamente con el paciente y la familia, reconociendo que la recuperación es un proceso de todos.</p>
+      </div>
+      <div class="variable-card">
+        <div class="variable-num">03</div>
+        <h3>Equipo Profesionalizado</h3>
+        <p>Nuestro grupo está conformado por psiquiatra, médico, psicólogo clínico, psicóloga de familia y especialista en adicciones.</p>
+      </div>
+      <div class="variable-card">
+        <div class="variable-num">04</div>
+        <h3>Terapia Breve</h3>
+        <p>Los tratamientos van desde los 20 días hasta un máximo de 60 días en los casos más críticos.</p>
+      </div>
+      <div class="variable-card">
+        <div class="variable-num">05</div>
+        <h3>Trabajo en Campo</h3>
+        <p>Todos los procedimientos (citas, ambulatorio, semi interno, interno) se desarrollan de forma domiciliaria para paciente y familia.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- EQUIPO -->
+  <div>
+    <p class="bloque-label">Nuestro equipo</p>
+    <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,52px); font-weight:400; margin-bottom:16px;">Profesionales en cada área</h2>
+    <p style="color:var(--blanco-suave); max-width:560px; line-height:1.7;">Los tratamientos los realizamos con personal profesional en cada una de las áreas especializadas.</p>
+    <div class="equipo-lista">
+      <span class="equipo-tag">👨‍⚕️ Psiquiatra</span>
+      <span class="equipo-tag">🩺 Médico</span>
+      <span class="equipo-tag">🧠 Psicólogo Clínico</span>
+      <span class="equipo-tag">👩‍👧 Psicóloga de Familia</span>
+      <span class="equipo-tag">💊 Especialista en Adicciones</span>
+    </div>
+
+    <!-- 
+      =====================================================
+      AQUÍ PUEDES AGREGAR FOTOS DEL EQUIPO
+      
+      Copia este bloque para cada miembro del equipo:
+      
+      <div style="text-align:center; margin-top:40px;">
+        <img src="foto-doctor.jpg" alt="Dr. Carlos Cruz" 
+             style="width:160px; height:160px; border-radius:50%; object-fit:cover; border:2px solid #1e1e1e;">
+        <p style="margin-top:12px; font-weight:500;">Dr. Carlos Cruz</p>
+        <p style="color:rgba(245,245,240,0.6); font-size:14px;">Director · Especialista en Adicciones</p>
+      </div>
+      =====================================================
+    -->
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-logo">AVANZA</span>
+  <span class="footer-texto">Psicología integral & adicciones · Sede administrativa: Bogotá, Colombia</span>
+  <span class="footer-texto">© 2026 Avanza — Todos los derechos reservados</span>
+</footer>
+
+</body>
+</html>

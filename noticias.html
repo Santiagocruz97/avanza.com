@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noticias - AVANZA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --verde:#00c875; --negro:#080808; --gris-oscuro:#111111;
+  --gris-borde:#1e1e1e; --blanco:#f5f5f0; --blanco-suave:rgba(245,245,240,0.6);
+}
+body { background:var(--negro); color:var(--blanco); font-family:'DM Sans',sans-serif; overflow-x:hidden; }
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:24px 8%; background:rgba(8,8,8,0.85); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--gris-borde);
+}
+.nav-logo { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; color:var(--blanco); text-decoration:none; letter-spacing:3px; }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-link { color:var(--blanco-suave); text-decoration:none; font-size:14px; letter-spacing:1px; text-transform:uppercase; transition:color 0.3s; }
+.nav-link:hover,.nav-link.activo { color:var(--verde); }
+@media(max-width:768px){ .nav-links { display:none; } }
+
+.page-hero {
+  padding:160px 8% 80px;
+  background:radial-gradient(ellipse at 80% 30%, rgba(0,200,117,0.07), transparent 60%), var(--negro);
+  border-bottom:1px solid var(--gris-borde);
+}
+.breadcrumb { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--verde); margin-bottom:24px; }
+.breadcrumb a { color:var(--blanco-suave); text-decoration:none; }
+.page-hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(48px,7vw,90px); font-weight:300; letter-spacing:4px; margin-bottom:24px; }
+.page-hero .subtitulo { font-size:18px; color:var(--blanco-suave); max-width:600px; line-height:1.7; }
+
+.contenido { padding:80px 8%; }
+
+.seccion-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--verde); margin-bottom:16px; }
+.seccion-titulo { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,52px); font-weight:400; margin-bottom:8px; }
+.seccion-sub { color:var(--blanco-suave); max-width:500px; line-height:1.7; margin-bottom:56px; }
+
+/* =====================================================
+   NOTICIA DESTACADA (artículo principal)
+   ===================================================== */
+.noticia-destacada {
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+  background:var(--gris-oscuro); border:1px solid var(--gris-borde);
+  border-radius:24px; padding:52px 48px; margin-bottom:60px;
+  transition:border-color 0.3s;
+}
+.noticia-destacada:hover { border-color:rgba(0,200,117,0.25); }
+@media(max-width:768px){ .noticia-destacada { grid-template-columns:1fr; gap:32px; padding:36px 28px; } }
+
+.noticia-tag { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--verde); margin-bottom:12px; }
+.noticia-fecha { font-size:13px; color:var(--blanco-suave); margin-bottom:16px; }
+.noticia-destacada h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,3vw,40px); font-weight:400; margin-bottom:16px; line-height:1.25; }
+.noticia-destacada p { color:var(--blanco-suave); line-height:1.8; margin-bottom:12px; }
+
+.btn-link {
+  display:inline-flex; align-items:center; gap:8px;
+  color:var(--verde); text-decoration:none; font-size:15px; margin-top:12px; transition:gap 0.3s;
+}
+.btn-link:hover { gap:14px; }
+
+/* Imagen de noticia */
+.img-placeholder {
+  width:100%; aspect-ratio:4/3; background:var(--negro);
+  border:1px dashed var(--gris-borde); border-radius:16px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:12px; color:var(--blanco-suave);
+}
+.img-placeholder span { font-size:40px; }
+.img-placeholder p { font-size:13px; text-align:center; line-height:1.6; max-width:200px; }
+.img-real { width:100%; border-radius:16px; object-fit:cover; height:340px; display:block; }
+
+/* =====================================================
+   GRID DE NOTICIAS SECUNDARIAS
+   
+   CÓMO AGREGAR UNA NOTICIA NUEVA:
+   1. Copia un bloque <div class="noticia-card">...</div>
+   2. Pégalo dentro del .noticias-grid
+   3. Cambia la fecha, título, descripción y el href del enlace
+   4. Si tienes imagen, reemplaza .img-placeholder con <img src="foto.jpg" class="img-noticia">
+   ===================================================== */
+.noticias-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
+  gap:24px;
+  margin-bottom:80px;
+}
+
+.noticia-card {
+  background:var(--gris-oscuro); border:1px solid var(--gris-borde);
+  border-radius:20px; overflow:hidden; transition:all 0.3s;
+}
+.noticia-card:hover { border-color:rgba(0,200,117,0.25); transform:translateY(-4px); }
+
+/* Área de imagen de la noticia */
+.noticia-img-wrap {
+  width:100%; aspect-ratio:16/9; background:var(--negro);
+  border-bottom:1px solid var(--gris-borde);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; color:var(--blanco-suave); font-size:13px; text-align:center; padding:20px;
+}
+/* Cuando tengas la imagen, usa esta clase en lugar de .noticia-img-wrap: */
+.img-noticia { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
+
+.noticia-body { padding:28px 24px; }
+.noticia-body .noticia-tag { display:inline-block; margin-bottom:8px; }
+.noticia-body .noticia-fecha { font-size:12px; color:var(--blanco-suave); margin-bottom:12px; }
+.noticia-body h3 { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; margin-bottom:12px; line-height:1.3; }
+.noticia-body p { color:var(--blanco-suave); font-size:14px; line-height:1.7; margin-bottom:20px; }
+.noticia-body a { color:var(--verde); text-decoration:none; font-size:14px; }
+.noticia-body a:hover { text-decoration:underline; }
+
+/* =====================================================
+   SECCIÓN FACEBOOK
+   ===================================================== -->
+.facebook-bloque {
+  background:linear-gradient(135deg, rgba(0,200,117,0.05), rgba(0,200,117,0.01));
+  border:1px solid rgba(0,200,117,0.15);
+  border-radius:24px; padding:52px 48px;
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+  margin-bottom:80px;
+}
+@media(max-width:768px){ .facebook-bloque { grid-template-columns:1fr; gap:32px; padding:36px 28px; } }
+.facebook-bloque h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(28px,4vw,44px); font-weight:400; margin-bottom:16px; }
+.facebook-bloque p { color:var(--blanco-suave); line-height:1.8; margin-bottom:12px; }
+.btn-primary { display:inline-block; padding:14px 36px; background:var(--verde); color:#000; text-decoration:none; font-weight:500; border-radius:60px; transition:all 0.3s; margin-top:12px; }
+.btn-primary:hover { transform:scale(1.04); }
+
+/* 
+  EMBED DE FACEBOOK
+  Puedes insertar el widget oficial de Facebook Page aquí.
+  Para generarlo: developers.facebook.com/docs/plugins/page-plugin
+  Pega el código iframe que te generen dentro de .fb-embed-wrap
+*/
+.fb-embed-wrap {
+  width:100%; min-height:300px; background:var(--negro);
+  border:1px dashed var(--gris-borde); border-radius:16px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:12px; color:var(--blanco-suave); text-align:center; padding:24px;
+}
+.fb-embed-wrap span { font-size:40px; }
+.fb-embed-wrap p { font-size:13px; line-height:1.6; max-width:260px; }
+
+footer {
+  padding:40px 8%; border-top:1px solid var(--gris-borde);
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+}
+.footer-logo { font-family:'Cormorant Garamond',serif; font-size:22px; letter-spacing:3px; }
+.footer-texto { color:var(--blanco-suave); font-size:13px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">AVANZA</a>
+  <ul class="nav-links">
+    <li><a href="sobre-nosotros.html" class="nav-link">Nosotros</a></li>
+    <li><a href="servicios.html" class="nav-link">Servicios</a></li>
+    <li><a href="testimonios.html" class="nav-link">Testimonios</a></li>
+    <li><a href="noticias.html" class="nav-link activo">Noticias</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <p class="breadcrumb"><a href="index.html">Inicio</a> / Noticias</p>
+  <h1>Noticias &<br>Reportajes</h1>
+  <p class="subtitulo">Menciones en medios nacionales, publicaciones de nuestros tratamientos y casos de éxito que han marcado nuestra historia.</p>
+</div>
+
+<div class="contenido">
+
+  <!-- NOTICIA DESTACADA: WILDER MEDINA EN EL ESPECTADOR -->
+  <p class="seccion-label">Destacado</p>
+  <div class="noticia-destacada">
+    <div>
+      <p class="noticia-tag">Reportaje · El Espectador</p>
+      <p class="noticia-fecha">Hace aproximadamente 11 años</p>
+      <h2>"Wilder Medina merecía volver a vivir"</h2>
+      <p>Reportaje del diario El Espectador sobre el proceso de recuperación del futbolista profesional Wilder Medina, realizado por nuestro director el Dr. Carlos Cruz.</p>
+      <p>A través de nuestro tratamiento, Wilder se recuperó de la enfermedad de la adicción y encontró una mejor calidad de vida para él y su familia.</p>
+      <!-- Enlace real al artículo de El Espectador -->
+      <a href="https://www.elespectador.com/deportes/futbol-colombiano/santa-fe/wilder-medina-merecia-volver-a-vivir-article-396257/" 
+         target="_blank" class="btn-link">
+        Leer artículo completo en El Espectador →
+      </a>
+    </div>
+
+    <!-- 
+      IMAGEN DEL REPORTAJE O DE WILDER MEDINA
+      Reemplaza con: <img src="wilder-espectador.jpg" alt="Wilder Medina" class="img-real">
+    -->
+    <div class="img-placeholder">
+      <span>📰</span>
+      <p>Foto del reportaje o de Wilder Medina<br><br><code>&lt;img src="noticia.jpg" class="img-real"&gt;</code></p>
+    </div>
+  </div>
+
+
+  <!-- GRID DE NOTICIAS -->
+  <p class="seccion-label">Más noticias</p>
+  <h2 class="seccion-titulo">En los medios</h2>
+  <p class="seccion-sub">Publicaciones, reportajes y menciones de AVANZA a nivel nacional.</p>
+
+  <div class="noticias-grid">
+
+    <!-- 
+      NOTICIA 1
+      CÓMO PERSONALIZAR:
+      - Cambia el texto de .noticia-tag, .noticia-fecha, h3, p
+      - Cambia el href del enlace por el URL real de la noticia
+      - Reemplaza .noticia-img-wrap con <img src="foto.jpg" class="img-noticia"> cuando tengas la imagen
+    -->
+    <div class="noticia-card">
+      <div class="noticia-img-wrap">
+        <span>📸</span>
+        <p>Imagen de la noticia<br><code>&lt;img src="foto.jpg" class="img-noticia"&gt;</code></p>
+      </div>
+      <div class="noticia-body">
+        <span class="noticia-tag">Tratamientos</span>
+        <p class="noticia-fecha">2024</p>
+        <h3>Tratamientos a domicilio en varias ciudades del país</h3>
+        <p>Publicación sobre nuestros tratamientos virtuales y a domicilio en diferentes ciudades de Colombia, compartida en nuestra página de Facebook.</p>
+        <!-- 
+          Cambia el href por el enlace real de la publicación
+        -->
+        <a href="https://www.facebook.com/avanza.psicologiaintegraladicciones" target="_blank">Ver publicación →</a>
+      </div>
+    </div>
+
+    <!-- NOTICIA 2 -->
+    <div class="noticia-card">
+      <div class="noticia-img-wrap">
+        <span>📸</span>
+        <p>Imagen de la noticia<br><code>&lt;img src="foto.jpg" class="img-noticia"&gt;</code></p>
+      </div>
+      <div class="noticia-body">
+        <span class="noticia-tag">Caso de éxito</span>
+        <p class="noticia-fecha">2023</p>
+        <h3>Recuperación integral: paciente y familia</h3>
+        <p>Historia de éxito de un proceso terapéutico con el paciente y su familia, donde lograron recuperarse y mejorar su calidad de vida.</p>
+        <a href="#">Ver más →</a>
+      </div>
+    </div>
+
+    <!-- NOTICIA 3 -->
+    <div class="noticia-card">
+      <div class="noticia-img-wrap">
+        <span>📸</span>
+        <p>Imagen de la noticia<br><code>&lt;img src="foto.jpg" class="img-noticia"&gt;</code></p>
+      </div>
+      <div class="noticia-body">
+        <span class="noticia-tag">Educación</span>
+        <p class="noticia-fecha">2022</p>
+        <h3>Cómo funciona la cita terapéutica de negación</h3>
+        <p>Publicación explicando nuestra cita especializada para casos en que el paciente es renuente a recibir ayuda, con técnicas de rompimiento de la negación.</p>
+        <a href="#">Ver más →</a>
+      </div>
+    </div>
+
+    <!-- 
+      AGREGA MÁS NOTICIAS AQUÍ:
+      Copia un bloque .noticia-card completo y pégalo aquí.
+    -->
+
+  </div>
+
+
+  <!-- SECCIÓN FACEBOOK -->
+  <div class="facebook-bloque">
+    <div>
+      <p class="seccion-label">Redes sociales</p>
+      <h2>Síguenos en Facebook</h2>
+      <p>Nuestra página de Facebook tiene más de 10 años de antigüedad. Allí podrás conocer más sobre nosotros, ver publicaciones de nuestros tratamientos virtuales y a domicilio en varias ciudades del país.</p>
+      <a href="https://www.facebook.com/avanza.psicologiaintegraladicciones" target="_blank" class="btn-primary">
+        Visitar página de Facebook
+      </a>
+    </div>
+
+    <!-- 
+      EMBED OFICIAL DE FACEBOOK
+      Para agregar el widget de tu página de Facebook:
+      1. Ve a: developers.facebook.com/docs/plugins/page-plugin
+      2. Ingresa el URL de tu página de Facebook
+      3. Configura el tamaño y opciones
+      4. Copia el código HTML que te generan
+      5. Pégalo aquí, dentro del .fb-embed-wrap (reemplazando el contenido actual)
+    -->
+    <div class="fb-embed-wrap">
+      <span>📘</span>
+      <p>Widget de tu página de Facebook va aquí<br><br>Genera el código en:<br>developers.facebook.com/docs/plugins/page-plugin</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-logo">AVANZA</span>
+  <span class="footer-texto">Psicología integral & adicciones · Sede administrativa: Bogotá, Colombia</span>
+  <span class="footer-texto">© 2026 Avanza — Todos los derechos reservados</span>
+</footer>
+</body>
+</html>

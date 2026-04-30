@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testimonios - AVANZA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --verde:#00c875; --negro:#080808; --gris-oscuro:#111111;
+  --gris-borde:#1e1e1e; --blanco:#f5f5f0; --blanco-suave:rgba(245,245,240,0.6);
+}
+body { background:var(--negro); color:var(--blanco); font-family:'DM Sans',sans-serif; overflow-x:hidden; }
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:24px 8%; background:rgba(8,8,8,0.85); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--gris-borde);
+}
+.nav-logo { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; color:var(--blanco); text-decoration:none; letter-spacing:3px; }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-link { color:var(--blanco-suave); text-decoration:none; font-size:14px; letter-spacing:1px; text-transform:uppercase; transition:color 0.3s; }
+.nav-link:hover,.nav-link.activo { color:var(--verde); }
+@media(max-width:768px){ .nav-links { display:none; } }
+
+.page-hero {
+  padding:160px 8% 80px;
+  background:radial-gradient(ellipse at 50% 80%, rgba(0,200,117,0.06), transparent 60%), var(--negro);
+  border-bottom:1px solid var(--gris-borde);
+}
+.breadcrumb { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--verde); margin-bottom:24px; }
+.breadcrumb a { color:var(--blanco-suave); text-decoration:none; }
+.page-hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(48px,7vw,90px); font-weight:300; letter-spacing:4px; margin-bottom:24px; }
+.page-hero .subtitulo { font-size:18px; color:var(--blanco-suave); max-width:600px; line-height:1.7; }
+
+.contenido { padding:80px 8%; }
+
+.seccion-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--verde); margin-bottom:16px; }
+.seccion-titulo { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,52px); font-weight:400; margin-bottom:8px; }
+.seccion-sub { color:var(--blanco-suave); max-width:500px; line-height:1.7; margin-bottom:56px; }
+
+/* =====================================================
+   TARJETAS DE TESTIMONIO EN TEXTO
+   
+   CÓMO AGREGAR UN TESTIMONIO:
+   Copia el bloque <div class="testimonio-card">...</div>
+   y pégalo dentro del .testimonios-grid.
+   Cambia el nombre, cargo y el texto del testimonio.
+   ===================================================== */
+.testimonios-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
+  gap:24px;
+  margin-bottom:80px;
+}
+
+.testimonio-card {
+  background:var(--gris-oscuro); border:1px solid var(--gris-borde);
+  border-radius:20px; padding:40px 32px; transition:border-color 0.3s;
+}
+.testimonio-card:hover { border-color:rgba(0,200,117,0.25); }
+
+.comillas { font-family:'Cormorant Garamond',serif; font-size:80px; color:var(--verde); line-height:0.8; margin-bottom:20px; opacity:0.5; }
+
+.testimonio-texto { color:var(--blanco-suave); line-height:1.8; font-size:15px; margin-bottom:28px; font-style:italic; }
+
+.testimonio-autor { display:flex; align-items:center; gap:16px; }
+
+/* 
+  FOTO DEL TESTIMONIANTE
+  Reemplaza .foto-placeholder con <img src="foto.jpg" class="foto-real"> cuando tengas las fotos
+*/
+.foto-placeholder {
+  width:48px; height:48px; border-radius:50%;
+  background:var(--negro); border:1px solid var(--gris-borde);
+  display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;
+}
+.foto-real { width:48px; height:48px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+
+.autor-info p:first-child { font-weight:500; font-size:15px; }
+.autor-info p:last-child { color:var(--blanco-suave); font-size:13px; }
+
+/* =====================================================
+   TESTIMONIOS EN VIDEO
+   
+   Esta sección es para videos testimoniales de pacientes o familias.
+   
+   CÓMO AGREGAR UN VIDEO DE YOUTUBE:
+   Dentro del .video-wrapper, reemplaza .video-placeholder con el iframe de YouTube.
+   
+   Ejemplo:
+   <div class="video-wrapper">
+     <iframe src="https://www.youtube.com/embed/ID-DEL-VIDEO" 
+             title="Testimonio" frameborder="0" allowfullscreen></iframe>
+   </div>
+   ===================================================== -->
+<div style="margin-bottom:80px;">
+  <p class="seccion-label">En video</p>
+  <h2 class="seccion-titulo">Historias que inspiran</h2>
+  <p class="seccion-sub">Videos de pacientes y familias que vivieron el proceso de recuperación con AVANZA.</p>
+</div>
+
+.videos-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
+  gap:24px;
+  margin-bottom:100px;
+}
+
+.video-item { }
+.video-item .video-wrapper {
+  width:100%; aspect-ratio:16/9; border-radius:16px; overflow:hidden;
+  border:1px solid var(--gris-borde); background:var(--gris-oscuro); margin-bottom:16px;
+}
+.video-item .video-wrapper iframe { width:100%; height:100%; border:none; }
+.video-placeholder {
+  width:100%; height:100%; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:12px; color:var(--blanco-suave);
+}
+.video-placeholder span { font-size:48px; }
+.video-placeholder p { font-size:13px; text-align:center; max-width:220px; line-height:1.6; }
+.video-item h3 { font-size:17px; margin-bottom:6px; }
+.video-item p { color:var(--blanco-suave); font-size:14px; }
+
+/* CASO WILDER MEDINA */
+.caso-destacado {
+  background:linear-gradient(135deg, rgba(0,200,117,0.06), rgba(0,200,117,0.02));
+  border:1px solid rgba(0,200,117,0.2);
+  border-radius:24px; padding:60px 48px;
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+  margin-bottom:80px;
+}
+@media(max-width:768px){ .caso-destacado { grid-template-columns:1fr; gap:32px; padding:40px 28px; } }
+.caso-destacado .tag { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--verde); margin-bottom:16px; }
+.caso-destacado h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(28px,4vw,48px); font-weight:400; margin-bottom:20px; }
+.caso-destacado p { color:var(--blanco-suave); line-height:1.8; margin-bottom:12px; }
+
+.btn-link {
+  display:inline-flex; align-items:center; gap:8px;
+  color:var(--verde); text-decoration:none; font-size:15px; margin-top:16px; transition:gap 0.3s;
+}
+.btn-link:hover { gap:14px; }
+
+/* Imagen placeholder */
+.img-placeholder {
+  width:100%; aspect-ratio:4/3; background:var(--gris-oscuro);
+  border:1px dashed var(--gris-borde); border-radius:16px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:12px; color:var(--blanco-suave);
+}
+.img-placeholder span { font-size:40px; }
+.img-placeholder p { font-size:13px; text-align:center; line-height:1.6; max-width:200px; }
+.img-real { width:100%; border-radius:16px; object-fit:cover; height:400px; display:block; }
+
+/* CTA */
+.cta-bloque { text-align:center; padding:60px 0; border-top:1px solid var(--gris-borde); }
+.cta-bloque h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,5vw,64px); font-weight:300; margin-bottom:20px; }
+.cta-bloque p { color:var(--blanco-suave); max-width:440px; margin:0 auto 36px; line-height:1.7; }
+.btn-primary { display:inline-block; padding:14px 36px; background:var(--verde); color:#000; text-decoration:none; font-weight:500; border-radius:60px; transition:all 0.3s; }
+.btn-primary:hover { transform:scale(1.04); }
+
+footer {
+  padding:40px 8%; border-top:1px solid var(--gris-borde);
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+}
+.footer-logo { font-family:'Cormorant Garamond',serif; font-size:22px; letter-spacing:3px; }
+.footer-texto { color:var(--blanco-suave); font-size:13px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">AVANZA</a>
+  <ul class="nav-links">
+    <li><a href="sobre-nosotros.html" class="nav-link">Nosotros</a></li>
+    <li><a href="servicios.html" class="nav-link">Servicios</a></li>
+    <li><a href="testimonios.html" class="nav-link activo">Testimonios</a></li>
+    <li><a href="noticias.html" class="nav-link">Noticias</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <p class="breadcrumb"><a href="index.html">Inicio</a> / Testimonios</p>
+  <h1>Historias de<br>recuperación</h1>
+  <p class="subtitulo">Pacientes y familias que encontraron una mejor calidad de vida con nuestros tratamientos. Resultados garantizados por 25 años.</p>
+</div>
+
+<div class="contenido">
+
+  <!-- TESTIMONIOS EN TEXTO -->
+  <p class="seccion-label">Lo que dicen</p>
+  <h2 class="seccion-titulo">Testimonios de pacientes y familias</h2>
+  <p class="seccion-sub">Estas son algunas de las historias de quienes confiaron en nuestro proceso.</p>
+
+  <div class="testimonios-grid">
+
+    <!-- 
+      TESTIMONIO 1
+      CÓMO PERSONALIZAR:
+      - Cambia el texto dentro de .testimonio-texto
+      - Cambia el nombre en .autor-info
+      - Para foto real: borra .foto-placeholder y escribe <img src="foto.jpg" class="foto-real">
+    -->
+    <div class="testimonio-card">
+      <div class="comillas">"</div>
+      <p class="testimonio-texto">El Dr. Cruz y su equipo transformaron nuestra familia. Mi hijo llevaba años atrapado en la adicción y en menos de 45 días pudimos ver un cambio real. El tratamiento en casa fue clave para que él no se sintiera estigmatizado.</p>
+      <div class="testimonio-autor">
+        <div class="foto-placeholder">👩</div>
+        <div class="autor-info">
+          <p>María L.</p>
+          <p>Madre de paciente · Bogotá</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIO 2 -->
+    <div class="testimonio-card">
+      <div class="comillas">"</div>
+      <p class="testimonio-texto">Lo que más me sorprendió fue que el tratamiento fue en mi propio hogar. No tuve que internarme en ninguna clínica. El equipo llegaba a mi casa y trabajaba conmigo y con mi familia al mismo tiempo. Eso fue determinante.</p>
+      <div class="testimonio-autor">
+        <div class="foto-placeholder">👨</div>
+        <div class="autor-info">
+          <p>Andrés R.</p>
+          <p>Paciente · Medellín</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIO 3 -->
+    <div class="testimonio-card">
+      <div class="comillas">"</div>
+      <p class="testimonio-texto">Intentamos varias clínicas antes de llegar a AVANZA. Ninguna funcionó. Aquí el enfoque integral, trabajando con toda la familia, fue completamente diferente. Los tratamientos son garantizados y eso se nota en los resultados.</p>
+      <div class="testimonio-autor">
+        <div class="foto-placeholder">👨‍👩‍👦</div>
+        <div class="autor-info">
+          <p>Familia González</p>
+          <p>Cali</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 
+      AGREGA MÁS TESTIMONIOS AQUÍ:
+      Copia un bloque .testimonio-card completo y pégalo aquí.
+    -->
+
+  </div>
+
+
+  <!-- VIDEOS DE TESTIMONIO -->
+  <p class="seccion-label" style="margin-top:80px;">En video</p>
+  <h2 class="seccion-titulo">Historias que inspiran</h2>
+  <p class="seccion-sub">Videos de pacientes y familias que vivieron el proceso de recuperación con AVANZA.</p>
+
+  <div class="videos-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; margin-bottom:100px;">
+
+    <!-- 
+      VIDEO TESTIMONIO 1
+      CÓMO INSERTAR VIDEO DE YOUTUBE:
+      Reemplaza el div.video-placeholder con el iframe de YouTube.
+      Ejemplo:
+      <iframe src="https://www.youtube.com/embed/TU-ID" title="Testimonio" frameborder="0" allowfullscreen></iframe>
+    -->
+    <div class="video-item">
+      <div class="video-wrapper">
+        <div class="video-placeholder">
+          <span>▶️</span>
+          <p>Video testimonio 1<br>Pega aquí el iframe de YouTube</p>
+        </div>
+      </div>
+      <h3>Testimonio en video</h3>
+      <p>Paciente recuperado · Bogotá</p>
+    </div>
+
+    <!-- VIDEO TESTIMONIO 2 -->
+    <div class="video-item">
+      <div class="video-wrapper">
+        <div class="video-placeholder">
+          <span>▶️</span>
+          <p>Video testimonio 2<br>Pega aquí el iframe de YouTube</p>
+        </div>
+      </div>
+      <h3>Testimonio en video</h3>
+      <p>Familia · Medellín</p>
+    </div>
+
+    <!-- VIDEO TESTIMONIO 3 -->
+    <div class="video-item">
+      <div class="video-wrapper">
+        <div class="video-placeholder">
+          <span>▶️</span>
+          <p>Video testimonio 3<br>Pega aquí el iframe de YouTube</p>
+        </div>
+      </div>
+      <h3>Testimonio en video</h3>
+      <p>Familia · Cali</p>
+    </div>
+
+  </div>
+
+
+  <!-- CASO DESTACADO: WILDER MEDINA -->
+  <div class="caso-destacado">
+    <div>
+      <p class="tag">Caso de éxito destacado</p>
+      <h2>Wilder Medina</h2>
+      <p>Hace aproximadamente 11 años, nuestro director el Dr. Carlos Cruz acompañó el proceso de recuperación del futbolista profesional Wilder Medina.</p>
+      <p>A través de nuestro tratamiento, Wilder se recuperó de la enfermedad de la adicción y encontró una mejor calidad de vida para él y para su familia. Su historia fue cubierta por medios nacionales.</p>
+      <!-- 
+        Enlace al artículo de El Espectador sobre Wilder Medina
+        Este es el enlace real que te proporcionó Carlos Cruz.
+      -->
+      <a href="https://www.elespectador.com/deportes/futbol-colombiano/santa-fe/wilder-medina-merecia-volver-a-vivir-article-396257/" 
+         target="_blank" class="btn-link">
+        Leer reportaje en El Espectador →
+      </a>
+    </div>
+
+    <!-- 
+      FOTO DE WILDER MEDINA O DEL REPORTAJE
+      Reemplaza con: <img src="wilder-medina.jpg" alt="Wilder Medina" class="img-real">
+    -->
+    <div class="img-placeholder">
+      <span>⚽</span>
+      <p>Foto de Wilder Medina o del reportaje<br><br><code>&lt;img src="wilder.jpg" class="img-real"&gt;</code></p>
+    </div>
+  </div>
+
+
+  <!-- CTA FINAL -->
+  <div class="cta-bloque">
+    <h2>Tu historia puede ser la siguiente</h2>
+    <p>Contáctanos y empieza el camino hacia la recuperación hoy mismo.</p>
+    <a href="https://wa.me/57XXXXXXXXXX" class="btn-primary">Hablar con un especialista</a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-logo">AVANZA</span>
+  <span class="footer-texto">Psicología integral & adicciones · Sede administrativa: Bogotá, Colombia</span>
+  <span class="footer-texto">© 2026 Avanza — Todos los derechos reservados</span>
+</footer>
+</body>
+</html>
